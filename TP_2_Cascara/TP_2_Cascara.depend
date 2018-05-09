@@ -1,0 +1,51 @@
+# depslib dependency file v1.0
+1525555587 source:c:\users\pino\desktop\tp programacion y laboratorio\labo-prog 1\tp2 - fecha -- 11 - 5 -2018\tp_2_cascara\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+	"utn.h"
+
+1525553169 c:\users\pino\desktop\tp programacion y laboratorio\labo-prog 1\tp2 - fecha -- 11 - 5 -2018\tp_2_cascara\funciones.h
+
+1525555557 source:c:\users\pino\desktop\tp programacion y laboratorio\labo-prog 1\tp2 - fecha -- 11 - 5 -2018\tp_2_cascara\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+	"utn.h"
+
+1524691840 c:\users\pino\desktop\tp programacion y laboratorio\labo-prog 1\tp2 - fecha -- 11 - 5 -2018\tp_2_cascara\utn.h
+
+1524691840 source:c:\users\pino\desktop\tp programacion y laboratorio\labo-prog 1\tp2 - fecha -- 11 - 5 -2018\tp_2_cascara\utn.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"utn.h"
+
+1525555587 source:c:\users\pino\desktop\tp_2_cascara\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+	"utn.h"
+
+1525837129 c:\users\pino\desktop\tp_2_cascara\funciones.h
+
+1524691840 c:\users\pino\desktop\tp_2_cascara\utn.h
+
+1524691840 source:c:\users\pino\desktop\tp_2_cascara\utn.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"utn.h"
+
+1525837098 source:c:\users\pino\desktop\tp_2_cascara\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+	"utn.h"
+
