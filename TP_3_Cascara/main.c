@@ -3,16 +3,16 @@
 #include <string.h>
 #include "funciones.h"
 #include "utn.h"
-
-
+#define LIM_MOVIE 100
 
 int main()
 {
-    EMovie* movie[10];
+    EMovie* movie[LIM_MOVIE];
     int menu;
+    int auxId;
 
     int cantidadActual = 0;
-    int cantidadMaxima = 10;
+    int cantidadMaxima = LIM_MOVIE;
     int auxIndice;
 
     char auxTitulo[40];
@@ -22,31 +22,32 @@ int main()
     {
         getValidInt("\n\n1.Agregar pelicula\n2.Borrar pelicula\n3.Modificar pelicula\n4.Generar pagina web\n5.Salir\n"
                     ,"\nNo valida\n",&menu,0,5,1);
+
         switch(menu)
         {
             case 1:
                 auxIndice=cantidadActual;
-                funciones_add(movie,0,&cantidadActual);
+                funciones_add(movie,&cantidadMaxima,&cantidadActual);
                 mostrarPelicula(movie,auxIndice);
                 cargarAlArchivo(movie,auxIndice);
                 break;
             case 2:
-                if(!getValidString("\nTitulo a eliminar? ","\nEso no es un Titulo","El maximo es 40",auxTitulo,40,2))
-                {
-                    cargarDeArchivo(movie,&cantidadActual);
-                    guardarTodoMenos(movie,cantidadActual,auxTitulo);
-                }
+                cantidadActual = 0;
+                cargarDeArchivo(movie,&cantidadMaxima,&cantidadActual);
+                mostrarIdTitulo(movie,cantidadActual);
+                getValidInt("\n\nIngrese un id a eliminar: \n","\nId no valido\n",&auxId,0,cantidadActual,2);
+                guardarTodoMenos(movie,cantidadActual,auxId);
+                //mostrarIdTitulo(movie,cantidadActual);
                 break;
             case 3:
-                if(!getValidString("\nTitulo a eliminar? ","\nEso no es un Titulo","El maximo es 40",auxTitulo,40,2))
-                {
-                    cargarDeArchivo(movie,&cantidadActual);
-                    modificar(movie, buscarPorTitulo(movie,cantidadActual,auxTitulo));
-                }
+                cantidadActual = 0;
+                cargarDeArchivo(movie,&cantidadMaxima,&cantidadActual);
+                mostrarIdTitulo(movie,cantidadActual);
+                getValidInt("\n\nIngrese un id a eliminar: \n","\nId no valido\n",&auxId,0,cantidadActual,2);
                 break;
             case 4:
-                cargarDeArchivo(movie,&cantidadActual);
-                crearHTML(movie,cantidadActual);
+                cargarDeArchivo(movie,&cantidadMaxima,&cantidadActual);
+                crearHTML(movie,&cantidadActual);
                 break;
         }
 

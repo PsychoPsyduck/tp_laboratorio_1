@@ -8,6 +8,7 @@ typedef struct{
     char descripcion[50];
     int puntaje;
     char linkImagen[200];
+    int id;
 }EMovie;
 
 #endif // FUNCIONES_H_INCLUDED
@@ -69,7 +70,7 @@ EMovie* funciones_newPar(char* titulo,char* genero,int duracion,char* descripcio
  * \return void
  *
  */
-void arraymovies_add(EMovie* array[],int* cantidadActual, int indice, char* titulo,char* genero,int duracion,char* descripcion,int puntaje,char* linkImagen);
+void arraymovies_add(EMovie* array[],int cantidadMaxima,int* cantidadActual, int indice, char* titulo,char* genero,int duracion,char* descripcion,int puntaje,char* linkImagen);
 
 /** \brief descarla los datos del archivo
  *
@@ -78,7 +79,7 @@ void arraymovies_add(EMovie* array[],int* cantidadActual, int indice, char* titu
  * \return void
  *
  */
-void cargarDeArchivo(EMovie* array[], int* cantidadActual);
+void cargarDeArchivo(EMovie* array[],int cantidadMaxima, int* cantidadActual);
 
 
 /** \brief guarda todo al archivo menos la peliocula a eliminar
@@ -89,17 +90,17 @@ void cargarDeArchivo(EMovie* array[], int* cantidadActual);
  * \return void
  *
  */
-void guardarTodoMenos(EMovie* array[],int cantidad,char* auxTitulo);
+void guardarTodoMenos(EMovie* array[],int cantidad,int id);
 
 /** \brief busca un titulo
  *
  * \param array[] EMovie* pide la lista
  * \param limite int pide el limite
- * \param auxTitulo char* pide el titulo a buscar
+ * \param id int pide el id
  * \return int devuelve el indice
  *
  */
-int buscarPorTitulo(EMovie* array[],int limite, char* auxTitulo);
+int buscarPorId(EMovie* array[],int limite, int id);
 
 
 /** \brief modifica una pelicula por indice
@@ -134,6 +135,8 @@ int funciones_setDuracion(EMovie* this, int duracion);
 int funciones_getDuracion(EMovie* this, int* duracion);
 int funciones_setPuntaje(EMovie* this, int puntaje);
 int funciones_getPuntaje(EMovie* this, int* puntaje);
+int funciones_setId(EMovie* this);
+int funciones_getId(EMovie* this, int* id);
 
 
-
+int mostrarIdTitulo(EMovie* array[], int cantidadActual);

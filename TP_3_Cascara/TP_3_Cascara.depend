@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1527901545 source:c:\users\pino\desktop\tp 3\tp_3_cascara\main.c
+1529101604 source:c:\users\pino\desktop\tp 3\tp_3_cascara\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"funciones.h"
 	"utn.h"
 
-1527902193 c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.h
+1529101233 c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.h
 
 1526445292 source:c:\users\pino\desktop\tp 3\tp_3_cascara\utn.c
 	<stdio.h>
@@ -17,7 +17,7 @@
 
 1526445292 c:\users\pino\desktop\tp 3\tp_3_cascara\utn.h
 
-1527901782 source:c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.c
+1529101421 source:c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
