@@ -570,16 +570,11 @@ int resizeDown(ArrayList* this)
     int returnAux = -1;
     if(this != NULL)
     {
-        if((this->reservedSize - this->size) > AL_INCREMENT)
+        while((this->reservedSize - this->size) > AL_INCREMENT)
         {
             this->reservedSize-=AL_INCREMENT;
-            returnAux=0;
         }
-        else
-        {
-
-            returnAux=0;
-        }
+        returnAux=0;
     }
     return returnAux;
 
