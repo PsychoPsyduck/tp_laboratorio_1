@@ -3,21 +3,15 @@
 #include <string.h>
 #include "funciones.h"
 #include "utn.h"
+#include "ArrayList.h"
 #define LIM_MOVIE 100
 
 int main()
 {
-    EMovie* movie[LIM_MOVIE];
+    ArrayList* plistaPeliculas;
+    plistaPeliculas = al_newArrayList();
     int menu;
-    int auxId;
-
-    int cantidadActual = 0;
-    int cantidadMaxima = LIM_MOVIE;
-    int auxIndice;
-
-    char auxTitulo[40];
-
-
+    EMovie* auxArrayEmovie;
     do
     {
         getValidInt("\n\n1.Agregar pelicula\n2.Borrar pelicula\n3.Modificar pelicula\n4.Generar pagina web\n5.Salir\n"
@@ -25,29 +19,26 @@ int main()
 
         switch(menu)
         {
-            case 1:
-                auxIndice=cantidadActual;
-                funciones_add(movie,&cantidadMaxima,&cantidadActual);
-                mostrarPelicula(movie,auxIndice);
-                cargarAlArchivo(movie,auxIndice);
+                case 1:
+                funciones_cargarPelicula(auxArrayEmovie,plistaPeliculas);
                 break;
             case 2:
-                cantidadActual = 0;
-                cargarDeArchivo(movie,&cantidadMaxima,&cantidadActual);
-                mostrarIdTitulo(movie,cantidadActual);
-                getValidInt("\n\nIngrese un id a eliminar: \n","\nId no valido\n",&auxId,0,cantidadActual,2);
-                guardarTodoMenos(movie,cantidadActual,auxId);
-                //mostrarIdTitulo(movie,cantidadActual);
+                plistaPeliculas = al_newArrayList();
+                funciones_cargarDeArchivo(plistaPeliculas);
+                funciones_borrarPelicula(plistaPeliculas);
                 break;
             case 3:
-                cantidadActual = 0;
-                cargarDeArchivo(movie,&cantidadMaxima,&cantidadActual);
-                mostrarIdTitulo(movie,cantidadActual);
-                getValidInt("\n\nIngrese un id a eliminar: \n","\nId no valido\n",&auxId,0,cantidadActual,2);
+                plistaPeliculas = al_newArrayList();
+                funciones_cargarDeArchivo(plistaPeliculas);
+                funciones_modificarPelicula(plistaPeliculas);
                 break;
             case 4:
-                cargarDeArchivo(movie,&cantidadMaxima,&cantidadActual);
-                crearHTML(movie,&cantidadActual);
+                plistaPeliculas = al_newArrayList();
+                funciones_cargarDeArchivo(plistaPeliculas);
+                funciones_crearHTML(plistaPeliculas);
+                break;
+            case 5:
+                menu=5;
                 break;
         }
 

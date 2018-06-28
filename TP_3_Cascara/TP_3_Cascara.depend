@@ -1,12 +1,14 @@
 # depslib dependency file v1.0
-1529101604 source:c:\users\pino\desktop\tp 3\tp_3_cascara\main.c
+1530161406 source:c:\users\pino\desktop\tp 3\tp_3_cascara\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"funciones.h"
 	"utn.h"
+	"ArrayList.h"
 
-1529101233 c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.h
+1530161390 c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.h
+	"ArrayList.h"
 
 1526445292 source:c:\users\pino\desktop\tp 3\tp_3_cascara\utn.c
 	<stdio.h>
@@ -17,11 +19,57 @@
 
 1526445292 c:\users\pino\desktop\tp 3\tp_3_cascara\utn.h
 
-1529101421 source:c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.c
+1530160785 source:c:\users\pino\desktop\tp 3\tp_3_cascara\funciones.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<string.h>
 	"funciones.h"
+	"utn.h"
+	"ArrayList.h"
+
+1530162182 source:c:\users\pino\desktop\tp 3\tp_3_cascara\arraylist.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"ArrayList.h"
+
+1530158423 c:\users\pino\desktop\tp 3\tp_3_cascara\arraylist.h
+
+1530162339 source:c:\users\pino\desktop\tp_laboratorio_1\tp_3_cascara\arraylist.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"ArrayList.h"
+
+1530158423 c:\users\pino\desktop\tp_laboratorio_1\tp_3_cascara\arraylist.h
+
+1530160785 source:c:\users\pino\desktop\tp_laboratorio_1\tp_3_cascara\funciones.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"funciones.h"
+	"utn.h"
+	"ArrayList.h"
+
+1530161390 c:\users\pino\desktop\tp_laboratorio_1\tp_3_cascara\funciones.h
+	"ArrayList.h"
+
+1526445292 c:\users\pino\desktop\tp_laboratorio_1\tp_3_cascara\utn.h
+
+1530161406 source:c:\users\pino\desktop\tp_laboratorio_1\tp_3_cascara\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"funciones.h"
+	"utn.h"
+	"ArrayList.h"
+
+1526445292 source:c:\users\pino\desktop\tp_laboratorio_1\tp_3_cascara\utn.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
 	"utn.h"
 

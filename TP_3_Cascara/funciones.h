@@ -13,113 +13,97 @@ typedef struct{
 
 #endif // FUNCIONES_H_INCLUDED
 
+#include "ArrayList.h"
 
-/** \brief Muestra la pelicula antes de cargar
+/** \brief retorna los parametros cargados en un elemento
  *
- * \param array[] EMovie* donde la guarda
- * \param indice int indice a guardar
- * \return int
+ * \param titulo char* pide un titulo como parametro
+ * \param genero char* pide un genero como parametro
+ * \param descripcion char* pide una descripcion como parametro
+ * \param linkImagen char* pide un link como parametro
+ * \param duracion int pide la duracion como parametro
+ * \param puntaje int pide un puntaje como parametro
+ * \return EMovie* retorna el elemento con sus parametros cargados
  *
  */
-int mostrarPelicula(EMovie* array[], int indice);
+EMovie* funciones_newPar(char* titulo,char* genero,char* descripcion,char* linkImagen,int duracion,int puntaje);
 
-
-/** \brief agrega una pelicula a la lista
+/** \brief carga una pelicula al arrayList y al archivo .txt
  *
- * \param array[] EMovie* toma la lista
- * \param cantidadMaxima int cantdad maxima
- * \param cantidadActual int* cantidad actual cargadas
+ * \param lista EMovie* pide la lista EMovie
+ * \param arrayList ArrayList* pide la lista del arrayList
+ * \return int retorna 1 o 0 si funciono
+ *
+ */
+int funciones_cargarPelicula(EMovie* lista,ArrayList* arrayList);
+
+/** \brief muestra una pelicula y sus datos
+ *
+ * \param this EMovie* pide el elemento
+ * \return int retorna 1 o 0 si funciono
+ *
+ */
+int funciones_mostrarPelicula(EMovie* this);
+
+/** \brief carga un dato al archivo .txt sin borrar los datos ya cargados
+ *
+ * \param this EMovie* pide el elemento
  * \return void
  *
  */
-void funciones_add(EMovie* array[],int cantidadMaxima,int* cantidadActual);
+void funciones_cargarAlArchivo(EMovie* this);
 
-/** \brief carga la pelicula al archivo txt
+/** \brief Toma los datos del archivo .txt y los carga al arrayList
  *
- * \param array[] EMovie* toma la lista
- * \param indice int indice a agregar
+ * \param this ArrayList* Pide el arrayList donde guardar los datos
  * \return void
  *
  */
-void cargarAlArchivo(EMovie* array[],int indice);
+void funciones_cargarDeArchivo(ArrayList* this);
 
-/** \brief crea el espacio para una pelicula
+/** \brief Lista por consola los titulos cargados en el arrayList
  *
- * \param titulo char* pide un titulo
- * \param genero char* pide el genero
- * \param duracion int pide la duracion
- * \param descripcion char* pide la descripcion
- * \param puntaje int pide el puntaje
- * \param linkImagen char* pide el link
- * \return EMovie*
+ * \param this ArrayList* pide el arrayList
+ * \return int retorna 1 o 0 si funciona
  *
  */
-EMovie* funciones_newPar(char* titulo,char* genero,int duracion,char* descripcion,int puntaje,char* linkImagen);
+int funciones_listarPeliculas(ArrayList* this);
 
-/** \brief crea la pelicula
+/** \brief Carga todos los datos al archivo .txt eliminando lo que ya tenia
  *
- * \param array[] EMovie* pide donde guardarla
- * \param cantidadActual int* cuantos hay
- * \param indice int indice a guyardar
- * \param titulo char* pide el titulo
- * \param genero char* pide el genero
- * \param duracion int pide la duracion
- * \param descripcion char* pide la descripcion
- * \param puntaje int pide el puntaje
- * \param linkImagen char* pide el link
+ * \param this ArrayList* pide el arrayList
  * \return void
  *
  */
-void arraymovies_add(EMovie* array[],int cantidadMaxima,int* cantidadActual, int indice, char* titulo,char* genero,int duracion,char* descripcion,int puntaje,char* linkImagen);
+void funciones_cargarTodoAlArchivo(ArrayList* this);
 
-/** \brief descarla los datos del archivo
+/** \brief Elimina una pelicula del arrayList
  *
- * \param array[] EMovie* donde los almacena
- * \param cantidadActual int* cantidad actual al terminar
+ * \param this ArrayList* pide el arrayList
+ * \return int retorna 1 o 0 si funciona
+ *
+ */
+int funciones_borrarPelicula(ArrayList* this);
+
+/** \brief Modifica los datos de un elemento del arrayList
+ *
+ * \param this ArrayList* pide el arrayList
+ * \return int retona 1 o 0 si funciona
+ *
+ */
+int funciones_modificarPelicula(ArrayList* this);
+
+/** \brief Crea el archivo .html y le carga todos los datos del ArrayList
+ *
+ * \param this EMovie* Pide el arrayList
  * \return void
  *
  */
-void cargarDeArchivo(EMovie* array[],int cantidadMaxima, int* cantidadActual);
+void funciones_crearHTML(EMovie* this);
 
 
-/** \brief guarda todo al archivo menos la peliocula a eliminar
- *
- * \param array[] EMovie* de donde lo toma
- * \param cantidad int la cantidad
- * \param auxTitulo char* el titulo que no carga
- * \return void
- *
- */
-void guardarTodoMenos(EMovie* array[],int cantidad,int id);
-
-/** \brief busca un titulo
- *
- * \param array[] EMovie* pide la lista
- * \param limite int pide el limite
- * \param id int pide el id
- * \return int devuelve el indice
- *
- */
-int buscarPorId(EMovie* array[],int limite, int id);
 
 
-/** \brief modifica una pelicula por indice
- *
- * \param array[] EMovie* pide la lista
- * \param indice int pide el indice
- * \return void
- *
- */
-void modificar(EMovie* array[], int indice);
-
-/** \brief crea el HTML
- *
- * \param array[] EMovie* pide la lista
- * \param indice int pide un total
- * \return void
- *
- */
-void crearHTML(EMovie* array[],int indice);
 
 
 //Geters y Seters
@@ -135,8 +119,3 @@ int funciones_setDuracion(EMovie* this, int duracion);
 int funciones_getDuracion(EMovie* this, int* duracion);
 int funciones_setPuntaje(EMovie* this, int puntaje);
 int funciones_getPuntaje(EMovie* this, int* puntaje);
-int funciones_setId(EMovie* this);
-int funciones_getId(EMovie* this, int* id);
-
-
-int mostrarIdTitulo(EMovie* array[], int cantidadActual);

@@ -4,17 +4,43 @@
 #include <string.h>
 #include "funciones.h"
 #include "utn.h"
+#include "ArrayList.h"
 
 
-EMovie* movie_new()
+EMovie* funciones_new()
 {
     return malloc(sizeof(EMovie));
 }
 
-
-EMovie* movie_newP()
+void funciones_delete(EMovie* this)
 {
-    EMovie* this = movie_new();
+    if(this != NULL)
+        free(this);
+}
+
+EMovie* funciones_newPar(char* titulo,char* genero,char* descripcion,char* linkImagen,int duracion,int puntaje)
+{
+    EMovie* this;
+    this = funciones_new();
+
+    if( !funciones_setTitulo(this,titulo) &&
+        !funciones_setGenero(this,genero) &&
+        !funciones_setDescripcion(this,descripcion) &&
+        !funciones_setLinkImagen(this,linkImagen)&&
+        !funciones_setDuracion(this,duracion)&&
+        !funciones_setPuntaje(this,puntaje))
+    {
+
+        return this;
+    }
+    funciones_delete(this);
+    return NULL;
+}
+
+
+int funciones_cargarPelicula(EMovie* lista,ArrayList* arrayList)
+{
+    EMovie* auxListaP;
 
     int retorno = -1;
     char titulo[20];
@@ -24,31 +50,32 @@ EMovie* movie_newP()
     int puntaje;
     char linkImagen[200];
 
-    if(!getValidString("\nTitulo? ","\nEso no es un Titulo","El maximo es 40",titulo,40,2))
+    if(lista!=NULL && arrayList!=NULL)
     {
-        if(!getValidString("\nGenero? ","\nEso no es un Genero","El maximo es 40",genero,40,2))
+        if(!getValidString("\nTitulo? ","\nEso no es un Titulo","El maximo es 40",titulo,40,2))
         {
-            if(!getValidInt("\nDuracion? ","\nEso no es una duracion valido",&duracion,0,500,2))
+            if(!getValidString("\nGenero? ","\nEso no es un Genero","El maximo es 40",genero,40,2))
             {
-                if(!getValidString("\nDescripcion? ","\nEso no es una descripcion","El maximo es 40",descripcion,40,2))
+                if(!getValidInt("\nDuracion? ","\nEso no es una duracion valido",&duracion,0,500,2))
                 {
-                    if(!getValidInt("\nPuntaje? ","\nEso no es un puntaje valido",&puntaje,0,10,2))
+                    if(!getValidString("\nDescripcion? ","\nEso no es una descripcion","El maximo es 40",descripcion,40,2))
                     {
-                        if(!getValidString("\nLink Imagen? ","\nEso no es un link","El maximo es 40",linkImagen, 200,2))
+                        if(!getValidInt("\nPuntaje? ","\nEso no es un puntaje valido",&puntaje,0,10,2))
                         {
-                            retorno = 0;
-                            funciones_setTitulo(this,titulo);
-                            funciones_setGenero(this,genero);
-                            funciones_setDuracion(this,duracion);
-                            funciones_setDescripcion(this,descripcion);
-                            funciones_setPuntaje(this,puntaje);
-                            funciones_setLinkImagen(this,linkImagen);
-                            funciones_setId(this);
-                            printf("\nHa cargado una pelicula\n");
-                            return this;
+                            if(!getValidString("\nLink Imagen? ","\nEso no es un link","El maximo es 40",linkImagen, 200,2))
+                            {
+                                retorno = 0;
+                                auxListaP=funciones_newPar(titulo,genero,descripcion,linkImagen,duracion,puntaje);
+                                al_add(arrayList,auxListaP);
+                                funciones_mostrarPelicula(auxListaP);
+                                funciones_cargarAlArchivo(auxListaP);
+                                printf("ok");
+                                retorno =0;
+                            }
                         }
                     }
                 }
+
             }
         }
     }
@@ -56,16 +83,7 @@ EMovie* movie_newP()
 }
 
 
-void funciones_add(EMovie* array[],int cantidadMaxima,int* cantidadActual)
-{
-    if(*cantidadActual < cantidadMaxima)
-    {
-    array[*cantidadActual]  = movie_newP();
-    (*cantidadActual)++;
-    }
-}
-
-int mostrarPelicula(EMovie* array[], int index)
+int funciones_mostrarPelicula(EMovie* this)
 {
     char titulo[20];
     char genero[20];
@@ -73,22 +91,20 @@ int mostrarPelicula(EMovie* array[], int index)
     char descripcion[50];
     int puntaje;
     char linkImagen[200];
-    int id;
 
-    funciones_getTitulo(array[index], titulo);
-    funciones_getGenero(array[index], genero);
-    funciones_getDuracion(array[index], &duracion);
-    funciones_getDescripcion(array[index], descripcion);
-    funciones_getPuntaje(array[index], &puntaje);
-    funciones_getLinkImagen(array[index], linkImagen);
-    funciones_getId(array[index],&id);
+    funciones_getTitulo(this,titulo);
+    funciones_getGenero(this,genero);
+    funciones_getDuracion(this,&duracion);
+    funciones_getDescripcion(this,descripcion);
+    funciones_getPuntaje(this,&puntaje);
+    funciones_getLinkImagen(this,linkImagen);
 
-    printf("\n%s - %s - %d - %s - %d - %s - %d\n",titulo,genero,duracion,descripcion,puntaje,linkImagen,id);
+    printf("\n%s - %s - %d - %s - %d - %s\n",titulo,genero,duracion,descripcion,puntaje,linkImagen);
     return 0;
 }
 
 
-void cargarAlArchivo(EMovie* array[],int indice)
+void funciones_cargarAlArchivo(EMovie* this)
 {
 
     FILE *miArchivo;
@@ -102,88 +118,70 @@ void cargarAlArchivo(EMovie* array[],int indice)
 
     if(miArchivo!=NULL)
     {
-        funciones_getTitulo(array[indice], titulo);
-        funciones_getGenero(array[indice], genero);
-        funciones_getDuracion(array[indice], &duracion);
-        funciones_getDescripcion(array[indice], descripcion);
-        funciones_getPuntaje(array[indice], &puntaje);
-        funciones_getLinkImagen(array[indice], linkImagen);
+        funciones_getTitulo(this, titulo);
+        funciones_getGenero(this, genero);
+        funciones_getDuracion(this, &duracion);
+        funciones_getDescripcion(this, descripcion);
+        funciones_getPuntaje(this, &puntaje);
+        funciones_getLinkImagen(this, linkImagen);
         fprintf(miArchivo,"%s,%s,%d,%s,%d,%s\n",titulo,genero,duracion,descripcion,puntaje,linkImagen);
-        printf("\nBIEN");
+        printf("\nHa cargado una pelicula\n");
     }
     fclose(miArchivo);
 }
 
 //------------------------------------------BORRAR------------------------------------------------
 
-EMovie* funciones_newPar(char* titulo,char* genero,int duracion,char* descripcion,int puntaje,char* linkImagen)
-{
-    EMovie* this = movie_new();
-
-    if(       !funciones_setTitulo(this,titulo)
-       &&     !funciones_setGenero(this,genero)
-       &&     !funciones_setDuracion(this,duracion)
-       &&     !funciones_setDescripcion(this,descripcion)
-       &&     !funciones_setPuntaje(this,puntaje)
-       &&     !funciones_setLinkImagen(this,linkImagen)
-       &&     !funciones_setId(this))
-    {
-                return this;
-    }
-    return NULL;
-}
-
-void arraymovies_add(EMovie* array[],int cantidadMaxima,int* cantidadActual, int indice, char* titulo,char* genero,int duracion,char* descripcion,int puntaje,char* linkImagen)
-{
-    if(*cantidadActual < cantidadMaxima)
-    {
-    array[indice]  = funciones_newPar(titulo,genero,duracion,descripcion,puntaje,linkImagen);
-    (*cantidadActual)++;
-    }
-}
-
-void cargarDeArchivo(EMovie* array[],int cantidadMaxima, int* cantidadActual)
+void funciones_cargarDeArchivo(ArrayList* this)
 {
     FILE *miArchivo;
+    EMovie* auxListaP;
     char titulo[20];
     char genero[20];
+    char auxDuracion[20];
     int duracion;
     char descripcion[50];
+    char auxPuntaje[20];
     int puntaje;
     char linkImagen[200];
-    int indice;
     miArchivo = fopen("data.txt","r");
 
     if(miArchivo!=NULL)
     {
         do
         {
-            indice++;
-            fscanf(miArchivo,"%[^,],%[^,],%d,%[^,],%d,%[^\n]\n",titulo,genero,&duracion,descripcion,&puntaje,linkImagen);
-            printf("\nBIEN");
-            arraymovies_add(array,cantidadMaxima, cantidadActual,indice,titulo,genero,duracion,descripcion,puntaje,linkImagen);
+            int parts = fscanf(miArchivo,"%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n",titulo,genero,auxDuracion,descripcion,auxPuntaje,linkImagen);
+            if(parts==6)
+            {
+                duracion=atoi(auxDuracion);
+                puntaje=atoi(auxPuntaje);
+                auxListaP=funciones_newPar(titulo,genero,descripcion,linkImagen,duracion,puntaje);
+                al_add(this, auxListaP);
+            }
         }while(!feof(miArchivo));
         fclose(miArchivo);
     }
 }
 
- int mostrarIdTitulo(EMovie* array[], int cantidadActual)
+int funciones_listarPeliculas(ArrayList* this)
 {
+    int retorno=-1;
     int i;
-    int retorno = -1;
-    char titulo[20];
-    int id;
-    for(i=1;i<=cantidadActual;i++)
+    if(this!=NULL)
     {
-        funciones_getId(array[i],&id);
-        funciones_getTitulo(array[i], titulo);
-        printf("\n%d - %s\n",id,titulo);
+        for(i = 0; i < al_len(this); i++)
+        {
+            EMovie* auxiliar;
+            auxiliar=al_get(this, i);
+            printf("%d - %s\n", i + 1,auxiliar->titulo );
+        }
     }
     return retorno;
 }
 
-void guardarTodoMenos(EMovie* array[],int limite,int id)
+void funciones_cargarTodoAlArchivo(ArrayList* this)
 {
+
     FILE *miArchivo;
     int i;
     char titulo[20];
@@ -192,95 +190,103 @@ void guardarTodoMenos(EMovie* array[],int limite,int id)
     char descripcion[50];
     int puntaje;
     char linkImagen[200];
-    int auxId;
-    int numero = 5;
-    int auxIndice;
-
+    EMovie* auxListaP;
     miArchivo = fopen("data.txt","w");
-    if(miArchivo!=NULL)
-    {
-        auxIndice=buscarPorId(array,limite,id);
-        for(i=1; i<=limite; i++)
-        {
-            if(i!=auxIndice)
-            {
-                numero++;
-                funciones_getTitulo(array[i], titulo);
-                funciones_getGenero(array[i], genero);
-                funciones_getDuracion(array[i], &duracion);
-                funciones_getDescripcion(array[i], descripcion);
-                funciones_getPuntaje(array[i], &puntaje);
-                funciones_getLinkImagen(array[i], linkImagen);
-                funciones_getId(array[i],&auxId);
-                fprintf(miArchivo,"%s,%s,%d,%s,%d,%s,%d\n",titulo,genero,duracion,descripcion,puntaje,linkImagen,auxId);
-            }
 
+    for(i=0;i<al_len(this);i++)
+    {
+        if(miArchivo!=NULL)
+        {
+            auxListaP=al_get(this,i);
+            funciones_getTitulo(auxListaP, titulo);
+            funciones_getGenero(auxListaP, genero);
+            funciones_getDuracion(auxListaP, &duracion);
+            funciones_getDescripcion(auxListaP, descripcion);
+            funciones_getPuntaje(auxListaP, &puntaje);
+            funciones_getLinkImagen(auxListaP, linkImagen);
+            fprintf(miArchivo,"%s,%s,%d,%s,%d,%s\n",titulo,genero,duracion,descripcion,puntaje,linkImagen);
         }
-        fclose(miArchivo);
     }
+    printf("\nHa cargado la lista modificada\n");
+    fclose(miArchivo);
 }
 
-//----------------MODIFICAR-----------------------------------
-
-int buscarPorId(EMovie* array[],int limite, int id)
+int funciones_borrarPelicula(ArrayList* this)
 {
-    int retorno = -1;
-    int i;
-    int auxId;
-    if(limite > 0 && array != NULL)
+    int retorno=-1;
+    int idx;
+    if(this!=NULL)
     {
-        retorno = -2;
-        for(i=0;i<limite;i++)
+
+        funciones_listarPeliculas(this);
+        printf("Numero de Pelicula?\n");
+
+        scanf("%d",&idx);
+        if(idx>=0 && idx-1<al_len(this))
         {
-            funciones_getId(array[i], id);
-            if(auxId == id)
-            {
-                retorno = i;
-                break;
-            }
+            al_remove(this,idx-1);
+            funciones_cargarTodoAlArchivo(this);
         }
+        retorno=0;
     }
     return retorno;
 }
+//----------------MODIFICAR-----------------------------------
 
-void modificar(EMovie* array[], int indice)
+
+
+int funciones_modificarPelicula(ArrayList* this)
 {
+    int retorno=-1;
     char titulo[20];
     char genero[20];
-    int duracion;
     char descripcion[50];
+    char linkImagen[50];
+    int duracion;
     int puntaje;
-    char linkImagen[200];
+    int idx;
 
-    if(!getValidString("\nTitulo? ","\nEso no es un Titulo","El maximo es 40",titulo,40,2))
+    EMovie* auxListaP;
+    if(this!=NULL)
     {
-        if(!getValidString("\nGenero? ","\nEso no es un Genero","El maximo es 40",genero,40,2))
+        funciones_listarPeliculas(this);
+        printf("Numero de Pelicula?\n");
+
+        scanf("%d",&idx);
+        if((idx-1 >=0) && (idx-1 <al_len(this)))
         {
-            if(!getValidInt("\nDuracion? ","\nEso no es una duracion valido",&duracion,0,500,2))
+            if(!getValidString("\nTitulo? ","\nEso no es un Titulo","El maximo es 40",titulo,40,2))
             {
-                if(!getValidString("\nDescripcion? ","\nEso no es una descripcion","El maximo es 40",descripcion,40,2))
+                if(!getValidString("\nGenero? ","\nEso no es un Genero","El maximo es 40",genero,40,2))
                 {
-                    if(!getValidInt("\nPuntaje? ","\nEso no es un puntaje valido",&puntaje,0,10,2))
+                    if(!getValidInt("\nDuracion? ","\nEso no es una duracion valido",&duracion,0,500,2))
                     {
-                        if(!getValidString("\nLink Imagen? ","\nEso no es un link","El maximo es 40",linkImagen, 200,2))
+                        if(!getValidString("\nDescripcion? ","\nEso no es una descripcion","El maximo es 40",descripcion,40,2))
                         {
-                            funciones_setTitulo(array[indice],titulo);
-                            funciones_setGenero(array[indice],genero);
-                            funciones_setDuracion(array[indice],duracion);
-                            funciones_setDescripcion(array[indice],descripcion);
-                            funciones_setPuntaje(array[indice],puntaje);
-                            funciones_setLinkImagen(array[indice],linkImagen);
+                            if(!getValidInt("\nPuntaje? ","\nEso no es un puntaje valido",&puntaje,0,10,2))
+                            {
+                                if(!getValidString("\nLink Imagen? ","\nEso no es un link","El maximo es 40",linkImagen, 200,2))
+                                {
+                                    auxListaP=funciones_newPar(titulo,genero,descripcion,linkImagen,duracion,puntaje);
+                                    al_set(this,idx-1,auxListaP);
+                                    funciones_cargarTodoAlArchivo(this);
+                                    printf("\nHa cargado la lista modificada\n");
+                                    retorno=0;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+    return retorno;
 }
 
 //-------------------------------------------HTML-------------------------------------------------
 
-void crearHTML(EMovie* array[],int cantidadActual)
+void funciones_crearHTML(EMovie* this)
 {
 
     FILE *miArchivo;
@@ -291,9 +297,10 @@ void crearHTML(EMovie* array[],int cantidadActual)
     int puntaje;
     char linkImagen[50];
     int i;
+    EMovie* auxListaP;
     miArchivo = fopen("index.html","w");
 
-    if(miArchivo!=NULL)
+    if(miArchivo!=NULL && this!=NULL)
     {
         fprintf(miArchivo,"<!DOCTYPE html>\n");
         fprintf(miArchivo,"<html lang='en'>\n");
@@ -308,14 +315,15 @@ void crearHTML(EMovie* array[],int cantidadActual)
         fprintf(miArchivo,"<body>\n");
         fprintf(miArchivo,"    <div class='container'>\n");
 
-        for(i=0;i<cantidadActual;i++)
+        for(i=0;i<al_len(this);i++)
         {
-            funciones_getTitulo(array[i], titulo);
-            funciones_getGenero(array[i], genero);
-            funciones_getDuracion(array[i], &duracion);
-            funciones_getDescripcion(array[i], descripcion);
-            funciones_getPuntaje(array[i], &puntaje);
-            funciones_getLinkImagen(array[i], linkImagen);
+            auxListaP=al_get(this,i);
+            funciones_getTitulo(auxListaP, titulo);
+            funciones_getGenero(auxListaP, genero);
+            funciones_getDuracion(auxListaP, &duracion);
+            funciones_getDescripcion(auxListaP, descripcion);
+            funciones_getPuntaje(auxListaP, &puntaje);
+            funciones_getLinkImagen(auxListaP, linkImagen);
             fprintf(miArchivo,"\n");
             fprintf(miArchivo,"            <article class='col-md-4 article-intro'>\n");
             fprintf(miArchivo,"                <a href='#'>\n");
@@ -341,6 +349,7 @@ void crearHTML(EMovie* array[],int cantidadActual)
         fprintf(miArchivo,"	<script src='js/holder.min.js'></script>\n");
         fprintf(miArchivo,"</body>\n");
         fprintf(miArchivo,"</html>\n");
+        printf("\n\nArchivo creado con exito!!\n\n");
     }
     fclose(miArchivo);
 
